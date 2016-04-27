@@ -23,7 +23,11 @@ class HomeController < ApplicationController
     @forecast_link = response["current_observation"]["forecast_url"]
     @feels_like = response["current_observation"]["feelslike_f"]
 
+    search_query = @weather_words
 
+    response = HTTParty.get("http://pixabay.com/api", :query => {:key => ENV['pixabay_api_key'], :q => search_query})
+
+=begin
     if @weather_words == "Overcast" || @weather_words == "Cloudy"
     @url = "https://images.unsplash.com/photo-1445264618000-f1e069c5920f?crop=entropy&dpr=2&fit=crop&fm=jpg&h=775&ixjsv=2.0.0&ixlib=rb-0.3.5&q=50&w=1250"
 elsif @weather_words == "Clear" || @weather_words == "Sunny" || @weather_words == "Mostly Sunny"
@@ -37,5 +41,10 @@ elsif @weather_words == "Fog"
 else 
     @url = "https://images.unsplash.com/photo-1421081177127-339f586c9b49?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=f2d20cd9d3c70e91c0a2e2d35671a2f4"
 end   
+=end
+
+@url = response
+
+
 end
   end
