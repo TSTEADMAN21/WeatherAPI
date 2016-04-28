@@ -23,9 +23,9 @@ class HomeController < ApplicationController
     @forecast_link = response["current_observation"]["forecast_url"]
     @feels_like = response["current_observation"]["feelslike_f"]
 
-    search_query = @weather_words
+    @search_query = @weather_words
 
-    response = HTTParty.get("http://pixabay.com/api", :query => {:key => ENV['pixabay_api_key'], :q => search_query})
+    secondresponse = HTTParty.get("http://pixabay.com/api", :query => {:key => ENV['pixabay_api_key'], :q => @search_query})
 
 =begin
     if @weather_words == "Overcast" || @weather_words == "Cloudy"
@@ -43,7 +43,17 @@ else
 end   
 =end
 
-@url = response
+@totalHits = secondresponse["totalHits"]
+
+    if @totalHits > 40
+        @id = rand(40)
+    else
+        @id = rand(secondresponse[totalHits])
+    end
+
+@url = secondresponse["hits"][@id]["webformatURL"]
+
+
 
 
 end
